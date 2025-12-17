@@ -86,3 +86,59 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
         </div>
       </div>
     `;
+ // Drag handlers
+      li.addEventListener('dragstart', (ev) => {
+        draggedTaskId = t.id;
+        li.classList.add('dragging');
+        try { ev.dataTransfer.effectAllowed = 'move'; } catch (e) { }
+      });
+      li.addEventListener('dragend', () => {
+        draggedTaskId = null;
+        li.classList.remove('dragging');
+        // clear any inline borders left on re-render
+        li.style.borderTop = li.style.borderBottom = '';
+      });
+
+      li.addEventListener('dragover', (ev) => {
+        ev.preventDefault();
+        try { ev.dataTransfer.dropEffect = 'move'; } catch (e) { }
+        const rect = li.getBoundingClientRect();
+        const after = ev.clientY > rect.top + rect.height / 2;
+        li.style.borderTop = after ? '' : '2px solid #007bff';
+        li.style.borderBottom = after ? '2px solid #007bff' : '';
+      });
+
+      li.addEventListener('dragleave', () => {
+        li.style.borderTop = li.style.borderBottom = '';
+      });
+
+      li.addEventListener('drop', (ev) => {
+        ev.preventDefault();
+        li.style.borderTop = li.style.borderBottom = '';
+        if (draggedTaskId === null) return;
+        const draggedId = draggedTaskId;
+        const targetId = t.id;
+        if (draggedId === targetId) return;
+
+        const draggedIdx = tasks.findIndex(x => x.id == draggedId);
+        if (draggedIdx === -1) return;
+
+        // determine drop position (before/after)
+        const rect = li.getBoundingClientRect();
+        const after = ev.clientY > rect.top + rect.height / 2;
+
+        // remove dragged item
+        const [draggedTask] = tasks.splice(draggedIdx, 1);
+
+        // find current index of target (may have shifted after removal)
+        const newTargetIdx = tasks.findIndex(x => x.id == targetId);
+        const insertIndex = Math.max(0, newTargetIdx + (after ? 1 : 0));
+
+        tasks.splice(insertIndex, 0, draggedTask);
+
+        saveTasks();
+        renderTasks();
+      });
+
+      taskList.appendChild(li);
+    });
