@@ -654,3 +654,22 @@ footer {
     top: -80px;
   }
 }
+
+@media (width<350px) {
+  body {
+    position: relative;
+    scale: 0.6;
+    margin: 0;
+    top: -100px;
+  }
+}
+
+@media (width<300px) {
+  body {
+    position: relative;
+    scale: 0.6;
+    margin: 0;
+    top: -100px;
+  }
+
+}
