@@ -19,6 +19,25 @@
         <i class="fa fa-search" aria-hidden="true"></i><input id="searchBox" type="text" class='search-input'
           placeholder="Search tasks...(CTRL+S)"></span>
     </header>
+            <!-- this is a section for error box -->
+    <div class="error" style="display: none;">error occured</div>
+
+    <!-- this section holds place to "add tasks"
+ and also the local calendar to pick date and time 
+ for scheduling of tasks. -->
+    <section class="add-task">
+      <!-- <form action="">  to sumbit using enter and formality -->
+      <input id="taskText" type="text" placeholder="Add new task...(CTRL+A)">
+      <input id="taskDeadline" type="datetime-local">
+      <label for="priority" class="priority">Priority</label>
+      <select id="priority" name="priority" required>
+        <option value="LOW" id="option">Low</option>
+        <option value="MEDIUM" id="option2">Medium</option>
+        <option value="HIGH" id="option3">High</option>
+      </select>
+      <button id="addBtn" type="button">Add</button>
+      <!-- </form> -->
+    </section>
     </main>
 </body>
 </html>
