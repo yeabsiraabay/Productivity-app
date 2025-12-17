@@ -9,7 +9,7 @@
 - **CSS**: [productivity-app/style.css](<style.css>)
 - **JS**: [productivity-app/script.js](<script.js>)
 - **Assets**: [productivity-app/images](<images/icon.png>)
-- **Documentation**: The provided PDF is included: [Productivity App (3).pdf](<Productivity%20App%20(3).pdf>)
+
 
 **Main Features**
 - **ui design** : Applied basic CSS styling to enhance the visual appeal of the app, aligning it with the inspiration image and the provided live demo.  https://react-todo-app-1-xaq7.onrender.com
