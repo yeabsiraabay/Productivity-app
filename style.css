@@ -114,3 +114,57 @@ header {
     height: 0;
   }
 }
+.add-task {
+
+  display: inline-block;
+  justify-content: center;
+  place-items: center;
+  color: rgb(255, 255, 255);
+  padding: 30px;
+  border-bottom: 2px solid white;
+  margin: 0;
+  gap: 10px;
+}
+
+.add-task * {
+  height: 30px;
+  margin: 4px 5px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid whitesmoke;
+  color: white;
+}
+
+.add-task *::placeholder {
+  color: white;
+}
+
+#taskText {
+  width: 230px;
+}
+
+
+#taskDeadline {
+  background: #ffffff;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 1) 100%);
+}
+
+.priority {
+  border: none;
+  margin: 0;
+  font-size: 13px;
+  align-content: center;
+}
+
+#priority {
+  border-radius: 6px;
+  margin: 0;
+}
+
+
+#option,
+#option2,
+#option3 {
+  color: black;
+
+}
