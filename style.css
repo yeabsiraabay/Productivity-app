@@ -168,3 +168,64 @@ header {
   color: black;
 
 }
+#addBtn {
+  border-radius: 0;
+  margin: 0 5px;
+  width: 70px;
+  color: rgb(255, 255, 255);
+  font-weight: 900;
+  background: #ffffff;
+  background: linear-gradient(121deg, rgba(255, 255, 255, 0) 15%, rgba(52, 167, 164, 1) 62%);
+  border-color: rgb(52, 167, 164);
+}
+
+#addBtn:hover {
+  background: rgba(52, 167, 164);
+}
+
+.controls {
+  /* background: wheat; */
+  display: flex;
+  justify-content: space-between;
+}
+
+.remaining-tasks-container {
+  margin-top: 0;
+}
+
+.remaining-tasks {
+  color: rgb(13, 224, 13);
+}
+
+#filter {
+  height: 30px;
+  padding: 4px 15px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid whitesmoke;
+  color: white;
+}
+
+#filter1,
+#filter2,
+#filter3 {
+  color: black;
+}
+
+#filter4 {
+  color: red;
+}
+
+#filter5 {
+  color: rgba(255, 38, 0, 0.459);
+}
+
+#filter6 {
+  color: rgba(255, 115, 0, 0.664);
+}
+
+#filter7 {
+
+  color: rgb(51, 255, 0);
+
+}
