@@ -142,3 +142,13 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
 
       taskList.appendChild(li);
     });
+
+  // update remaining active tasks (unchecked and not overdue)
+    try {
+      const now2 = new Date();
+      const activeCount = tasks.filter(t => !t.completed && !(t.deadline && new Date(t.deadline) < now2)).length;
+      if (remains) remains.textContent = activeCount;
+    } catch (e) {
+      // ignore
+    }
+  };
