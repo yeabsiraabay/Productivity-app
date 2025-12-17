@@ -1,4 +1,4 @@
-**Project**
+#Project
 
 - **Name**: Productive Planner Pro
 - **Description**: A lightweight browser-based task manager with deadlines, priorities, subtasks, drag-and-drop ordering, keyboard shortcuts, notifications, and persistent storage using localStorage.
@@ -37,7 +37,7 @@
 
 **How to Use**
 
-- **Open**: Open https://todo-list.quadstack.pro.et in a modern browser.
+- **Open**: Open https://productivity-app.quadstack.pro.et in a modern browser.
 - **Add**: Type a task, optionally choose deadline and priority, then click `Add` or press Enter.
 - **Edit/Delete**: Use pencil icon to edit (cannot edit completed tasks) or trash icon to delete.
 - **Subtasks**: Expand Details → add subtasks → check to mark subtask complete.
