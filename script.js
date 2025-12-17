@@ -152,3 +152,34 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
       // ignore
     }
   };
+/* taks variable retreive tasks form local storage in the
+  form of strings and convert it into array of objects to display*/
+
+  let tasks = []; //created empty array
+  tasks = JSON.parse(localStorage.getItem("tasks")) || [];//trying to load tasks from local strorage
+  // ensure older saved tasks get new default fields ( subtasks, detailsExpanded)
+  tasks.forEach(t => {
+    if (!Array.isArray(t.subtasks)) t.subtasks = [];
+    if (typeof t.detailsExpanded === 'undefined') t.detailsExpanded = false;
+    if (typeof t.priority === 'undefined') t.priority = 'MEDIUM';
+  });
+
+  // return currently visible tasks (used by render and keyboard navigation)
+  function getVisibleTasks() {
+    const now = new Date();
+    return tasks.filter(t => {
+      const matchSearch = t.text.toLowerCase().includes(searchBox.value.toLowerCase());
+      const overdue = t.deadline && new Date(t.deadline) < now && !t.completed;
+      if (filter.value === "active" && t.completed) return false;
+      if (filter.value === "completed" && !t.completed) return false;
+      if (filter.value === "overdue" && !overdue) return false;
+      if (filter.value === 'LOW' || filter.value === "MEDIUM" || filter.value == "HIGH") {
+        const pf = filter.value.toLowerCase();
+        if (pf !== 'all' && pf !== '') {
+          const tp = (t.priority || 'MEDIUM').toLowerCase();
+          if (tp !== pf) return false;
+        }
+      }
+      return matchSearch;
+    });
+  };
