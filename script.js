@@ -403,3 +403,80 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
     error.style.display = 'inline-block';
     return setTimeout(() => { error.style.display = 'none' }, 3000);
   });
+  // single cancel handler (added once)
+  cancel.addEventListener("click", () => {
+    newName.value = '';
+    newDate.value = '';
+    editTask.style.display = 'none';
+    currentEditIndex = null;
+  });
+
+  // Filter / search changes
+  filter.onchange = renderTasks;
+  searchBox.oninput = renderTasks;
+
+  /* --- Select All / Bulk Actions ---
+     this checkbox toggles completion status of all visible tasks */
+
+  selectAllBox.type = "checkbox";
+  selectAllBox.id = "selectAll";
+  selectAllBox.title = "Select All tasks";
+
+  selectAllBox.onchange = () => {
+    const now = new Date();
+    let visibleTasks = tasks.filter(t => {
+      const overdue = t.deadline && new Date(t.deadline) < now && !t.completed;
+      if (filter.value === "active" && t.completed) return false;
+      if (filter.value === "completed" && !t.completed) return false;
+      if (filter.value === "overdue" && !overdue) return false;
+      return true;
+    });
+    visibleTasks.forEach(t => t.completed = selectAllBox.checked);
+    saveTasks();
+    renderTasks();
+  };
+
+  // --- NOTIFICATIONS ---
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+
+  // Check for upcoming or overdue tasks every minute
+  setInterval(() => {
+    const now = new Date();
+    tasks.forEach(t => {
+      if (!t.deadline || t.completed || t.notified) return;
+      const diff = new Date(t.deadline) - now;
+      if (diff <= 15 * 60 * 1000) { // due in 15 minutes or less
+        if (Notification.permission === "granted") {
+          new Notification("Task Reminder", { body: `${t.text} is due soon!` });
+        }
+        t.notified = true;
+        saveTasks();
+      }
+    });
+    renderTasks();
+  }, 60000); // every 60 seconds
+
+  // track overdue state to check over missed tasks
+  const overdueState = {};
+  (function initOverdueState() {
+    const now = new Date();
+    tasks.forEach(t => {
+      overdueState[t.id] = !!(t.deadline && new Date(t.deadline) < now && !t.completed);
+    });
+  })();
+
+  // check every second for expired tasks and rerender list when overdue state changes
+  setInterval(() => {
+    const now = new Date();
+    let changed = false;
+    tasks.forEach(t => {
+      const isOverdue = !!(t.deadline && new Date(t.deadline) < now && !t.completed);
+      if (overdueState[t.id] !== isOverdue) {
+        overdueState[t.id] = isOverdue;
+        changed = true;
+      }
+    });
+    if (changed) renderTasks();
+  }, 1000);
