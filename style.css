@@ -576,3 +576,52 @@ li.completed .task-title {
   height: 30px;
   border: 1px solid black;
 }
+.newName,
+.newDate {
+  width: 90%;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.newName::placeholder {
+  color: white;
+}
+
+.editBtn {
+  width: 200px;
+  border-radius: 20px;
+
+}
+
+.editBtn:hover {
+  color: #000000;
+  background: rgba(34, 193, 195, 1);
+  border: 0;
+}
+
+.cancel {
+  background-color: white;
+  color: red;
+  border: 0;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.cancel:hover {
+  background-color: rgb(219, 139, 139);
+  color: white;
+  border: 0;
+}
+
+.select-box {
+  display: none;
+  justify-content: center;
+
+}
+
+.dragging {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), 0 0 0 4px rgba(52, 167, 164, 0.14);
+  outline: none;
+  border: 2px solid rgb(52, 167, 164);
+
+}
