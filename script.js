@@ -392,3 +392,14 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
 
     saveTasks();
     renderTasks();
+
+    // clear and close editor
+    newName.value = '';
+    newDate.value = '';
+    editTask.style.display = 'none';
+    currentEditIndex = null;
+    error.textContent = "Task edited successfully";
+    error.style.background = 'green';
+    error.style.display = 'inline-block';
+    return setTimeout(() => { error.style.display = 'none' }, 3000);
+  });
