@@ -75,3 +75,42 @@ header {
   color: white;
   pointer-events: none;
 }
+
+.error {
+  background: rgb(221, 43, 43);
+  position: fixed;
+  min-width: 450px;
+
+  height: 40px;
+  top: 100px;
+  text-align: center;
+  display: inline-block;
+  align-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0px 0px 30px 30px;
+  z-index: 11;
+  animation: popup 3.2s ease-in-out;
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+
+  33% {
+    opacity: 1;
+    height: 40px;
+  }
+
+  66% {
+    opacity: 1;
+    height: 40px;
+  }
+
+  100% {
+    opacity: 0;
+    height: 0;
+  }
+}
