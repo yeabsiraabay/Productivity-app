@@ -1,1 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  background: rgb(37, 36, 68);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100dvh;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+main {
+  min-width: 450px;
+  max-width: 900px;
+  background: rgb(10, 10, 38);
+  border: 2px solid white;
+  margin: 30px;
+  transition: box-shadow 0.18s ease, transform 0.12s ease, border 0.12s ease;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  flex: 1 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  margin: 9px;
+}
+
+.name-moto {
+  margin-top: 0px;
+  display: inline-block;
+  justify-content: space-around;
+}
+
+.moto {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.678);
+}
