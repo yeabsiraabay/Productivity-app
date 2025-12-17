@@ -308,3 +308,87 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
         renderTasks();
       }
     }
+// add subtask
+    if (e.target.classList.contains('subtask-add')) {
+      const idx = tasks.findIndex(t => t.id == dataIndex);
+      if (idx === -1) return;
+      const li = e.target.closest('li');
+      const input = li.querySelector('.subtask-input');
+      const txt = input && input.value.trim();
+      if (!txt) return;
+      tasks[idx].subtasks = tasks[idx].subtasks || [];
+      tasks[idx].subtasks.push({ text: txt, completed: false });
+      // persist and re-render, then restore focus to the subtask input for quick entry
+      saveTasks();
+      renderTasks();
+      // focus the (new) input for this task after re-render
+      const newInput = document.querySelector(`.subtask-input[data-index="${dataIndex}"]`);
+      if (newInput) newInput.focus();
+      error.textContent = "New Subtask is Added";
+      error.style.background = 'green';
+      error.style.display = 'inline-block';
+      return setTimeout(() => { error.style.display = 'none' }, 3000);
+    }
+
+    // subtask checkbox toggle
+    if (e.target.classList.contains('subtask-checkbox')) {
+      const idx = tasks.findIndex(t => t.id == dataIndex);
+      const si = parseInt(e.target.dataset.subindex, 10);
+      if (idx === -1 || isNaN(si)) return;
+      tasks[idx].subtasks[si].completed = e.target.checked;
+      // set main task completed only if all subtasks are completed
+      const allDone = tasks[idx].subtasks.length > 0 && tasks[idx].subtasks.every(s => s.completed);
+      if (allDone) tasks[idx].completed = true;
+      else tasks[idx].completed = false;
+      selectDiv.style.display = tasks.some(t => t.completed) ? 'flex' : 'none';
+      saveTasks();
+      renderTasks();
+    }
+
+    // subtask delete
+    if (e.target.classList.contains('subtask-delete')) {
+      const idx = tasks.findIndex(t => t.id == dataIndex);
+      const si = parseInt(e.target.dataset.subindex, 10);
+      if (idx === -1 || isNaN(si)) return;
+      tasks[idx].subtasks.splice(si, 1);
+      saveTasks();
+      renderTasks();
+      error.textContent = "subtask deleted";
+      error.style.background = 'green';
+      error.style.display = 'inline-block';
+      return setTimeout(() => { error.style.display = 'none' }, 3000);
+    }
+
+    saveTasks();
+    renderTasks();
+
+  };
+
+  // single edit button handler (added once)
+  editBtn.addEventListener('click', () => {
+    if (currentEditIndex === null) return;
+    const newText = newName.value.trim();
+    if (!newText) {
+      error.textContent = "To add to the list, enter a task first!";
+      error.style.background = 'red';
+      error.style.display = 'inline-block';
+      return setTimeout(() => { error.style.display = 'none' }, 3000);;
+    };
+
+    tasks[currentEditIndex].text = newText;
+
+    const newDeadline = newDate.value;
+    if (newDeadline && newDeadline.trim() !== "") {
+      const parsed = new Date(newDeadline);
+      if (!isNaN(parsed) && parsed > new Date()) {
+        tasks[currentEditIndex].deadline = parsed.toISOString();
+      } else {
+        error.textContent = "invalid date!";
+        error.style.background = 'red';
+        error.style.display = 'inline-block';
+        return setTimeout(() => { error.style.display = 'none' }, 3000);;
+      }
+    }
+
+    saveTasks();
+    renderTasks();
