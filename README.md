@@ -63,7 +63,6 @@
 
 **Included Files**
 
-- The project includes the attached documentation PDF: [Productivity App (3).pdf](<Productivity%20App%20(3).pdf>)
 - Images used by the app are in the `images` folder: [ip assignment to-do(2)/images](<ip%20assignment%20to-do(2)/images>)
 
 
