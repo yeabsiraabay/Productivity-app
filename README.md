@@ -63,6 +63,6 @@
 
 **Included Files**
 
-- Images used by the app are in the `images` folder: [ip assignment to-do(2)/images](<ip%20assignment%20to-do(2)/images>)
+- Images used by the app are in the `images` folder: [ip assignment to-do(2)/images](images>)
 
 
