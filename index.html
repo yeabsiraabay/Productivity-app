@@ -38,6 +38,37 @@
       <button id="addBtn" type="button">Add</button>
       <!-- </form> -->
     </section>
+          <!-- this section holds place to "edit tasks"
+ and also the local calendar to pick date and time
+ for scheduling of tasks. -->
+    <div class="edit-task" style="display: none;">
+      <input class="newName" type="text" placeholder="Enter the new Name">
+      <input class="newDate" type="datetime-local">
+      <button class="editBtn" type="button">edit</button>
+      <button class="cancel">cancel</button>
+    </div>
+    <!-- this sections enables us to filter tasks 
+ based on their status. that means grouping them as 
+ completed, active or  missed tasks. -->
+    <section class="controls">
+      <span class="remaining-tasks-container">
+        <span class="remaining-tasks"></span><span> remaining
+          tasks</span></span><!--Display the amount of remaining tasks-->
+      <select id="filter">
+        <option value="all" id="filter1">All tasks</option>
+        <option value="active" id="filter2">Active tasks</option>
+        <option value="completed" id="filter3">Completed tasks</option>
+        <option value="overdue" id="filter4">Missed tasks</option>
+        <option value="LOW" id="filter5">LOW</option>
+        <option value="MEDIUM" id="filter6">Medium</option>
+        <option value="HIGH" id="filter7">
+          <H1>High</H1>
+        </option>
+      </select>
+
+    </section>
+    <div class="select-box"> select all<input class="select-all" type="checkbox"></div>
+
     </main>
 </body>
 </html>
