@@ -555,5 +555,35 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
       return;
     }
   });
+   // allow pressing Enter in the subtask input to add the subtask (delegated)
+  taskList.addEventListener('keydown', (e) => {
+    const target = e.target;
+    if (!target || !target.classList) return;
+
+    if (target.classList.contains('subtask-input') && e.key === 'Enter') {
+      e.preventDefault();
+      const dataIndex = target.dataset.index;
+      const addBtnEl = taskList.querySelector(`.subtask-add[data-index="${dataIndex}"]`);
+      if (addBtnEl) addBtnEl.click();
+    }
+  });
+  // helper to focus the checkbox for selectedTaskId after render(can be a single line code but we added conditions to prevent errors)
+  function focusCheckboxForSelected() {
+    if (selectedTaskId === null) return;
+    const cb = taskList.querySelector(`input[type="checkbox"][data-index="${selectedTaskId}"]`);
+    if (cb) {
+      try {
+        cb.focus();
+      } catch (e) {
+        setTimeout(() => cb.focus(), 0);
+      }
+    }
+  }
+  // Initial render
+  renderTasks();
+
+})
+
+
  
   
