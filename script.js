@@ -480,3 +480,80 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
     });
     if (changed) renderTasks();
   }, 1000);
+// allow Ctrl+A to jump to add-new-task input and Enter to submit
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault(); // stop browser Select All
+      textInput.focus();
+      textInput.select();
+    }
+    if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      searchBox.focus();
+      searchBox.select();
+    }
+  });
+  textInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      addBtn.click();
+    }
+  });
+  // make sure id counter continues from existing items
+  id = tasks.reduce((m, x) => Math.max(m, x.id || 0), id);
+  // track which task is currently being edited (index in tasks array)
+  let currentEditIndex = null;
+
+  // track which task is keyboard-selected (task.id)
+  let selectedTaskId = null;
+
+  // new: track id of dragged task
+  let draggedTaskId = null;
+
+  // keyboard navigation: ArrowUp / ArrowDown to move selection and Space ky to toggle completion
+  document.addEventListener('keydown', (e) => {
+    // ignore when typing in text inputs or edit modal is open — allow when focused element is a checkbox/radio
+    const ae = document.activeElement;
+    if (!ae) return;
+    const tag = ae.tagName;
+    const isTextInput = ae.isContentEditable || tag === 'TEXTAREA' || tag === 'INPUT' && (ae.type === 'text' || ae.type === 'search' || ae.type === 'datetime-local');//ignore if the focus outside the checkbox and in this input types
+    if (isTextInput || editTask.style.display === 'flex') return;
+
+    const visible = getVisibleTasks();
+    if (!visible.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const curIndex = visible.findIndex(t => t.id === selectedTaskId);
+      const nextIndex = curIndex === -1 ? 0 : Math.min(curIndex + 1, visible.length - 1);
+      selectedTaskId = visible[nextIndex].id;
+      renderTasks();
+      focusCheckboxForSelected();
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const curIndex = visible.findIndex(t => t.id === selectedTaskId);
+      const nextIndex = curIndex === -1 ? visible.length - 1 : Math.max(curIndex - 1, 0);
+      selectedTaskId = visible[nextIndex].id;
+      renderTasks();
+      focusCheckboxForSelected();
+      return;
+    }
+
+    if (e.code === 'Space' || e.key === ' ') {
+      // toggle completion for selected task
+      if (selectedTaskId === null) return;
+      e.preventDefault();
+      const taskIdx = tasks.findIndex(t => t.id == selectedTaskId);
+      if (taskIdx === -1) return;
+      tasks[taskIdx].completed = !tasks[taskIdx].completed;
+      selectDiv.style.display = tasks.some(t => t.completed) ? 'flex' : 'none';
+      saveTasks();
+      renderTasks();
+      focusCheckboxForSelected();
+      return;
+    }
+  });
+ 
+  
