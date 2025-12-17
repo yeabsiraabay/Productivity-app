@@ -244,3 +244,67 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
     error.style.display = 'inline-block';
     return setTimeout(() => { error.style.display = 'none' }, 3000);
   };
+ // Toggle complete / edit / delete
+
+  taskList.onclick = (e) => {
+    const target = e.target;
+
+    // allow direct interaction with inputs (typing) without triggering click handlers that re-render
+    if (target.classList && (target.classList.contains('subtask-input') )) return;
+    // also allow normal text/datetime inputs to be focused without interference
+    if (target.tagName === 'INPUT' && (target.type === 'text' || target.type === 'search' || target.type === 'datetime-local')) return;
+
+    const dataIndex = target.dataset.index;
+    // if no data-index, ignore clicks that are not on controls
+    if (typeof dataIndex === 'undefined') return;
+
+    // find the task by its id (dataset.index stores task.id in render)
+    const taskIdx = tasks.findIndex(t => t.id == dataIndex);
+    if (taskIdx === -1) return;
+
+    // checkbox toggle
+
+    // checkbox toggle
+    // checkbox toggle for main task only (ignore subtask checkboxes here)
+    if (e.target.type === "checkbox" && !e.target.classList.contains('subtask-checkbox')) {
+      tasks[taskIdx].completed = e.target.checked;
+      selectDiv.style.display = tasks.some(t => t.completed) ? 'flex' : 'none';
+    }
+
+    // delete
+    if (e.target.classList.contains("delete")) {
+      if (confirm("Delete this task?")) {
+        tasks.splice(taskIdx, 1);
+        saveTasks();
+        renderTasks()
+        error.textContent = "task deleted";
+        error.style.background = 'green';
+        error.style.display = 'inline-block';
+        return setTimeout(() => { error.style.display = 'none' }, 3000);
+      }
+    }
+
+    // open edit dialog: set currentEditIndex and populate fields
+    if (e.target.classList.contains("edit")) {
+      if (tasks[taskIdx].completed) {
+        error.textContent = "can not edit completed task. please uncheck to edit!";
+        error.style.background = 'red';
+        error.style.display = 'inline-block';
+        return setTimeout(() => { error.style.display = 'none' }, 3000);
+      }
+      currentEditIndex = taskIdx;
+      newName.value = tasks[taskIdx].text || "";
+      // try to convert stored ISO to input-friendly format (for input type datetime-local)
+      newDate.value = tasks[taskIdx].deadline ? new Date(tasks[taskIdx].deadline).toISOString().slice(0, 16) : "";
+      editTask.style.display = 'flex';
+    }
+
+    // Details toggle
+    if (e.target.classList.contains('details-toggle')) {
+      const idx = tasks.findIndex(t => t.id == dataIndex);
+      if (idx !== -1) {
+        tasks[idx].detailsExpanded = !tasks[idx].detailsExpanded;
+        saveTasks();
+        renderTasks();
+      }
+    }
