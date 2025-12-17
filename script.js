@@ -183,3 +183,64 @@ document.addEventListener("DOMContentLoaded", () => {//make sure the content is 
       return matchSearch;
     });
   };
+
+
+   // --- FETCH initial tasks if tasks empty ---
+  if (tasks.length === 0) {
+    fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+      .then(res => res.json())
+      .then(data => {
+        tasks = data.map(d => ({ id: ++id, text: d.title, completed: d.completed, deadline: null, notified: false, source: 'API', priority: "MEDIUM" }));
+        saveTasks();
+        renderTasks();
+
+      })
+      .catch(err => console.error("Failed to fetch initial tasks", err));
+  };
+
+
+
+  // Add new task
+  addBtn.onclick = () => {
+    const text = textInput.value.trim();
+    if (!text) {
+      error.textContent = "To add to the list, enter a task first!";
+      error.style.background = 'red';
+      error.style.display = 'inline-block';
+      return setTimeout(() => { error.style.display = 'none' }, 3000);
+    };
+    const priorityLevel = priority.value;
+    let deadline = deadlineInput.value;
+    let validDate;
+    if (deadline) {
+
+      const isDateValid = new Date(deadline) > new Date();
+      if (!isDateValid) {//check if the data  in past
+        error.textContent = "invalid date!";
+        error.style.background = 'red';
+        error.style.display = 'inline-block';
+        return setTimeout(() => { error.style.display = 'none' }, 3000);;
+      }
+      validDate = new Date(deadline).toISOString();//changes deadline into a format suitable for localstorage(to string)  
+    }
+    else {
+      deadline = null;
+    }
+    lastId = tasks[tasks.length - 1] ? tasks[tasks.length - 1].id : 0;//get the end of the list id 
+
+    /* push the task with its time and date to the tasklist. 
+    it is initially incompleted and not notified */
+    tasks.push({ id: ++lastId, text, completed: false, deadline: validDate, notified: false, source: 'USER', priority: priorityLevel, subtasks: [], detailsExpanded: false });//added the source of the task
+
+    /* clear the feilds of add task and deadline picking after one task pushed */
+    textInput.value = "";
+    deadlineInput.value = "";
+    /* save the added task to the local storage and render it on the 
+    screen */
+    saveTasks();
+    renderTasks();
+    error.textContent = "New task is Added";
+    error.style.background = 'green';
+    error.style.display = 'inline-block';
+    return setTimeout(() => { error.style.display = 'none' }, 3000);
+  };
